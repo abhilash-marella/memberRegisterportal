@@ -10,9 +10,11 @@ import javax.persistence.Id;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
+@Entity
 public class UserInfo {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	int id;
 	String memberId;
 	String name;
@@ -92,7 +94,8 @@ public class UserInfo {
 		return password;
 	}
 	public void setPassword(String password) {
-	
+		 PasswordEncoder encoder = new BCryptPasswordEncoder();
+		 password = encoder.encode(password);
 		this.password = password;
 	}
 	public UserInfo(int id, String memberId, String name, String address, String state, String country, String gmail,
@@ -109,7 +112,8 @@ public class UserInfo {
 		this.contactNo = contactNo;
 		this.dateOfBirth = dateOfBirth;
 		
-		
+		 PasswordEncoder encoder = new BCryptPasswordEncoder();
+		 password = encoder.encode(password);
 		 this.password = password;
 	}
 	@Override

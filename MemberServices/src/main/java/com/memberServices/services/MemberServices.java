@@ -13,12 +13,11 @@ import com.memberServices.model.Dependants;
 import com.memberServices.model.UserInfo;
 import com.memberServices.repository.ClaimRepository;
 import com.memberServices.repository.DependantRepository;
-import com.memberServices.repository.MemberRepository;
+import com.memberServices.restClient.RegistrationService;
 
 @Service
 public class MemberServices {
-	@Autowired
-	MemberRepository memberRepository;
+
 	
 	@Autowired
 	ClaimRepository claimRepository;
@@ -26,30 +25,14 @@ public class MemberServices {
 	@Autowired
 	DependantRepository dependantRepository;
 	
-	public UserInfo register(UserInfo userInfo)
-	{
-		UserInfo memDetails=memberRepository.save(userInfo);
-			
-		if(memDetails.getId()<9)
-		{
-			memDetails.setMemberId("P00"+memDetails.getId());
-			
-		}
-		else if(memDetails.getId()<100 && memDetails.getId()>9)
-				{
-			memDetails.setMemberId("P0"+memDetails.getId());
-			}
-		else 
-			{
-			memDetails.setMemberId("P"+memDetails.getId());
-			}
-		
-		return memberRepository.save(memDetails);
-	}
+	@Autowired
+	RegistrationService registrationService;
+	
+	
 	public ClaimDetails placeClaim(ClaimDetails claimDetails) throws MemberException
 	{
 		
-		Optional<UserInfo> userdata=memberRepository.findByMemberId(claimDetails.getUserId());
+		Optional<UserInfo> userdata=registrationService.findByMemberId(claimDetails.getUserId());
 		ClaimDetails claimData= new ClaimDetails();
 		if(userdata.isPresent())
 		{
@@ -105,7 +88,7 @@ public class MemberServices {
 		}
 		public Optional<UserInfo> getUserData(String userId)
 		{
-			return memberRepository.findByMemberId(userId);
+			return registrationService.findByMemberId(userId);
 
 		}
 }

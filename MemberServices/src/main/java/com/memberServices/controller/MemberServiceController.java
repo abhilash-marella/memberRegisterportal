@@ -3,6 +3,8 @@ package com.memberServices.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.imageio.spi.RegisterableService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import com.memberServices.exceptions.MemberException;
 import com.memberServices.model.ClaimDetails;
 import com.memberServices.model.Dependants;
 import com.memberServices.model.UserInfo;
+import com.memberServices.restClient.RegistrationService;
 import com.memberServices.services.MemberServices;
 
 @RestController
@@ -22,6 +25,9 @@ import com.memberServices.services.MemberServices;
 public class MemberServiceController {
 	@Autowired
 	MemberServices memberServices;
+	@Autowired
+	RegistrationService registrationService;
+	
 	@GetMapping("/hi")
 	public String greet()
 	{
@@ -31,7 +37,7 @@ public class MemberServiceController {
 	public UserInfo register(@RequestBody UserInfo userInfo)
 	{
 		
-		return memberServices.register(userInfo);
+		return registrationService.register(userInfo);
 	}
 	@PostMapping("/placeClaim")
 	public ClaimDetails placeClain(@RequestBody ClaimDetails claimDetails) throws MemberException
