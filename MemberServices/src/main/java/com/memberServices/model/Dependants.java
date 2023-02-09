@@ -2,26 +2,18 @@ package com.memberServices.model;
 
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity 
+@Document 
 public class Dependants {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
 	String memberName;
 	LocalDate dateOfBirth;
 	String registeredUser;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+	
+	
 	public String getMemberName() {
 		return memberName;
 	}
@@ -40,16 +32,16 @@ public class Dependants {
 	public void setRegisteredUser(String registeredUser) {
 		this.registeredUser = registeredUser;
 	}
-	public Dependants(int id, String memberName, LocalDate dateOfBirth, String registeredUser) {
+	public Dependants( String memberName, LocalDate dateOfBirth, String registeredUser) {
 		super();
-		this.id = id;
+		
 		this.memberName = memberName;
 		this.dateOfBirth = dateOfBirth;
 		this.registeredUser = registeredUser;
 	}
 	@Override
 	public String toString() {
-		return "Dependants [id=" + id + ", memberName=" + memberName + ", dateOfBirth=" + dateOfBirth
+		return "Dependants [ memberName=" + memberName + ", dateOfBirth=" + dateOfBirth
 				+ ", RegisteredUser=" + registeredUser + "]";
 	}
 	

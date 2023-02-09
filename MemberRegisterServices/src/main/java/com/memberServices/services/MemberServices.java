@@ -9,33 +9,37 @@ import org.springframework.stereotype.Service;
 import com.memberServices.model.UserInfo;
 
 import com.memberServices.repository.MemberRepository;
+import com.mongodb.client.MongoClient;
+
 
 @Service
 public class MemberServices {
 	@Autowired
 	MemberRepository memberRepository;
-	
-	
+	@Autowired
+	MongoClient mongoClient;
 	
 	public UserInfo register(UserInfo userInfo)
-	{
-		UserInfo memDetails=memberRepository.save(userInfo);
+	{	
+		long count=memberRepository.count()+1;
+		
+		System.out.println(memberRepository.count());
 			
-		if(memDetails.getId()<9)
+		if(count<9)
 		{
-			memDetails.setMemberId("P00"+memDetails.getId());
+			userInfo.setMemberId("P00"+count);
 			
 		}
-		else if(memDetails.getId()<100 && memDetails.getId()>9)
+		else if(count<100 &&count>9)
 				{
-			memDetails.setMemberId("P0"+memDetails.getId());
+			userInfo.setMemberId("P0"+count);
 			}
 		else 
 			{
-			memDetails.setMemberId("P"+memDetails.getId());
+			userInfo.setMemberId("P"+count);
 			}
 		
-		return memberRepository.save(memDetails);
+		return memberRepository.save(userInfo);
 	}
 		public Optional<UserInfo> getUserData(String userId)
 		{

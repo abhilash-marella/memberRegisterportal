@@ -2,13 +2,12 @@ package com.memberServices.repository;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.memberServices.model.ClaimDetails;
 
-@Repository
-public interface ClaimRepository extends JpaRepository<ClaimDetails ,Integer> {
+
+public interface ClaimRepository extends MongoRepository<ClaimDetails ,Integer> {
 	
 public List<ClaimDetails> findByUserId(String userId);
 }

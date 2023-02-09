@@ -1,6 +1,5 @@
 package com.memberServices.services;
 
-import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +12,7 @@ import com.memberServices.model.Dependants;
 import com.memberServices.model.UserInfo;
 import com.memberServices.repository.ClaimRepository;
 import com.memberServices.repository.DependantRepository;
-import com.memberServices.restClient.RegistrationService;
+import com.memberServices.restclient.RegistrationServices;
 
 @Service
 public class MemberServices {
@@ -26,46 +25,52 @@ public class MemberServices {
 	DependantRepository dependantRepository;
 	
 	@Autowired
-	RegistrationService registrationService;
+	RegistrationServices registrationService;
 	
 	
 	public ClaimDetails placeClaim(ClaimDetails claimDetails) throws MemberException
 	{
+		
+		claimDetails.setClaimNumber((long) Math.floor(Math.random() * 1_000_000_0000L));
 		
 		Optional<UserInfo> userdata=registrationService.findByMemberId(claimDetails.getUserId());
 		ClaimDetails claimData= new ClaimDetails();
 		if(userdata.isPresent())
 		{
 			if(claimDetails.getMemberName().equalsIgnoreCase(userdata.get().getName()))
-			{
+			{	claimDetails.setDateOfBirth(userdata.get().getDateOfBirth());
 				claimData=claimRepository.save(claimDetails);
-				claimData.setClaimNumber(Long.parseLong(Year.now().getValue()+"0000"+claimData.getId()));
-				
 			}
 			else {
 			Optional<List<Dependants>> dependants= dependantRepository.findByRegisteredUser(userdata.get().getMemberId());
 			if(dependants.isPresent()) {
-			boolean isDepandantValid=dependants.get().stream().anyMatch(s->s.getMemberName().equalsIgnoreCase(claimDetails.getMemberName()));
-			System.out.println(isDepandantValid);
-			if(isDepandantValid) {
-			claimData=claimRepository.save(claimDetails);
-			claimData.setClaimNumber(Long.parseLong(Year.now().getValue()+"0000"+claimData.getId()));
-		}
-			else 
-				throw new MemberException("Not a valid member to claim");
-		}
-			else 
-				throw new MemberException("No Dependant found");
+				boolean validDependant=false;
+				for(Dependants dependant :dependants.get())
+				{
+					if(claimDetails.getMemberName().equalsIgnoreCase(dependant.getMemberName())) {
+						claimDetails.setDateOfBirth(dependant.getDateOfBirth());
+					claimData=claimRepository.save(claimDetails);
+					validDependant=true;
+
+				}
+				
 			}
-			
+				if(!validDependant) 
+					throw new MemberException("Not a valid member to claim");
+				
+		}
+			else 
+				throw new MemberException("No Dependant found With the "+claimDetails.getMemberName());
+		}
 			}else 
-				throw new MemberException("User not Registered");
+				throw new MemberException(claimDetails.getUserId()+"  not a Registered user");
 		
 		return claimData;
 		}
 	
 		public List<ClaimDetails> getClaimDetails(String UserId)
 		{
+			System.out.println(claimRepository.findByUserId(UserId));
 			return claimRepository.findByUserId(UserId);	
 		}
 
@@ -88,6 +93,7 @@ public class MemberServices {
 		}
 		public Optional<UserInfo> getUserData(String userId)
 		{
+			System.out.println("========================"+userId);
 			return registrationService.findByMemberId(userId);
 
 		}

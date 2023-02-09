@@ -2,39 +2,26 @@ package com.memberServices.model;
 
 import java.time.LocalDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Entity
+@Document
 public class UserInfo {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
+
 	String memberId;
 	String name;
 	String address;
-	String state;
+	String city;
 	String country;
 	String gmail;
+	@Id
 	String pan;
 	String contactNo;
 	LocalDate dateOfBirth;
 	String password;
-	
-
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-		
-	}
 	public String getMemberId() {
 		return memberId;
 	}
@@ -53,13 +40,14 @@ public class UserInfo {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getState() {
-		return state;
-	}
-	public void setState(String state) {
-		this.state = state;
-	}
 	
+	
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
 	public String getCountry() {
 		return country;
 	}
@@ -98,14 +86,13 @@ public class UserInfo {
 		 password = encoder.encode(password);
 		this.password = password;
 	}
-	public UserInfo(int id, String memberId, String name, String address, String state, String country, String gmail,
+	public UserInfo( String memberId, String name, String address, String city, String country, String gmail,
 			String pan, String contactNo, LocalDate dateOfBirth, String password) {
 		super();
-		this.id = id;
 		this.memberId = memberId;
 		this.name = name;
 		this.address = address;
-		this.state = state;
+		this.city = city;
 		this.country = country;
 		this.gmail = gmail;
 		this.pan = pan;
@@ -118,16 +105,13 @@ public class UserInfo {
 	}
 	@Override
 	public String toString() {
-		return "UserInfo [id=" + id + ", memberId=" + memberId + ", name=" + name + ", address=" + address + ", state="
-				+ state + ", country=" + country + ", gmail=" + gmail + ", pan=" + pan + ", contactNo=" + contactNo
+		return "UserInfo [memberId=" + memberId + ", name=" + name + ", address=" + address + ", city="
+				+ city + ", country=" + country + ", gmail=" + gmail + ", pan=" + pan + ", contactNo=" + contactNo
 				+ ", dateOfBirth=" + dateOfBirth + ", password=" + password + "]";
 	}
 	public UserInfo() {
 		
 		// TODO Auto-generated constructor stub
 	}
-
-	
-	
 	
 }

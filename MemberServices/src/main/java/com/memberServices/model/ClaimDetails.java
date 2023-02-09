@@ -1,18 +1,14 @@
 package com.memberServices.model;
 
 import java.time.LocalDate;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
-@Entity
+@Document
 public class ClaimDetails {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	int id;
+	
+	
 	long claimNumber;
 	String memberName;
 	LocalDate dateOfBirth;
@@ -30,12 +26,7 @@ public class ClaimDetails {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+
 	public long getClaimNumber() {
 		return claimNumber;
 	}
@@ -83,16 +74,15 @@ public class ClaimDetails {
 
 	@Override
 	public String toString() {
-		return "ClaimDetails [id=" + id + ", claimNumber=" + claimNumber + ", memberName=" + memberName
+		return "ClaimDetails [ claimNumber=" + claimNumber + ", memberName=" + memberName
 				+ ", dateOfBirth=" + dateOfBirth + ", dateOfAdmission=" + dateOfAdmission + ", dateOfDischarge="
 				+ dateOfDischarge + ", providerName=" + providerName + ", totalBillAmount=" + totalBillAmount
 				+ ", userId=" + userId + "]";
 	}
 	
-	public ClaimDetails(int id, long claimNumber, String memberName, LocalDate dateOfBirth, LocalDate dateOfAdmission,
+	public ClaimDetails( long claimNumber, String memberName, LocalDate dateOfBirth, LocalDate dateOfAdmission,
 			LocalDate dateOfDischarge, String providerName, Double totalBillAmount, String userId) {
 		super();
-		this.id = id;
 		this.claimNumber = claimNumber;
 		this.memberName = memberName;
 		this.dateOfBirth = dateOfBirth;

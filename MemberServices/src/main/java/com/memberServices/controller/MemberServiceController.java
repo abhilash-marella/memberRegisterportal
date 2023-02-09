@@ -3,9 +3,8 @@ package com.memberServices.controller;
 import java.util.List;
 import java.util.Optional;
 
-import javax.imageio.spi.RegisterableService;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,16 +16,20 @@ import com.memberServices.exceptions.MemberException;
 import com.memberServices.model.ClaimDetails;
 import com.memberServices.model.Dependants;
 import com.memberServices.model.UserInfo;
-import com.memberServices.restClient.RegistrationService;
+import com.memberServices.restclient.RegistrationServices;
 import com.memberServices.services.MemberServices;
 
 @RestController
 @CrossOrigin
+
+@ComponentScan(basePackages = {
+		"com.memberServices.restclient"})
 public class MemberServiceController {
 	@Autowired
 	MemberServices memberServices;
+	
 	@Autowired
-	RegistrationService registrationService;
+	RegistrationServices registrationService;
 	
 	@GetMapping("/hi")
 	public String greet()
@@ -36,7 +39,6 @@ public class MemberServiceController {
 	@PostMapping("/register")
 	public UserInfo register(@RequestBody UserInfo userInfo)
 	{
-		
 		return registrationService.register(userInfo);
 	}
 	@PostMapping("/placeClaim")
@@ -62,6 +64,7 @@ public class MemberServiceController {
 	
 	@GetMapping("/memeberDetails/{userId}")	
 	public Optional<UserInfo> findUser(@PathVariable String userId) {
+		System.out.println("==================================== rest "+userId);
 		return memberServices.getUserData(userId);
 	}
 }
