@@ -1,5 +1,7 @@
 package com.memberServices.services;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +32,14 @@ public class MemberServices {
 	
 	public ClaimDetails placeClaim(ClaimDetails claimDetails) throws MemberException
 	{
-		
+		LocalDate dateOfAdmission = claimDetails.getDateOfAdmission();
+		LocalDate dateOfDischarge = claimDetails.getDateOfDischarge();
+		boolean validaDate=false;
+		if(dateOfDischarge.isAfter(dateOfAdmission) || dateOfAdmission.isEqual(dateOfDischarge))
+		{
+			validaDate=true;
+		}
+		if(validaDate) {
 		claimDetails.setClaimNumber((long) Math.floor(Math.random() * 1_000_000_0000L));
 		
 		Optional<UserInfo> userdata=registrationService.findByMemberId(claimDetails.getUserId());
@@ -66,7 +75,10 @@ public class MemberServices {
 				throw new MemberException(claimDetails.getUserId()+"  not a Registered user");
 		
 		return claimData;
+		
 		}
+		else 
+			throw new MemberException("Date of Discharge must be After the Date Of Admision");}
 	
 		public List<ClaimDetails> getClaimDetails(String UserId)
 		{
