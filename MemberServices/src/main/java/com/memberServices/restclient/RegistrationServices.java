@@ -11,7 +11,7 @@ import com.memberServices.model.UserInfo;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
-@FeignClient(name ="UserInfo" ,url="http://localhost:8088")
+@FeignClient(name ="UserInfo" ,url="http://3.91.249.143:8088")
 public interface RegistrationServices {
 
 @PostMapping("/register")
