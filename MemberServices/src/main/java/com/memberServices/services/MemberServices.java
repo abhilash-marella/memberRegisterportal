@@ -1,6 +1,5 @@
 package com.memberServices.services;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -82,7 +81,6 @@ public class MemberServices {
 	
 		public List<ClaimDetails> getClaimDetails(String UserId)
 		{
-			System.out.println(claimRepository.findByUserId(UserId));
 			return claimRepository.findByUserId(UserId);	
 		}
 
@@ -105,7 +103,6 @@ public class MemberServices {
 		}
 		public Optional<UserInfo> getUserData(String userId)
 		{
-			System.out.println("========================"+userId);
 			return registrationService.findByMemberId(userId);
 
 		}

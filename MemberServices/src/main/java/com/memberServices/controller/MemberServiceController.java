@@ -31,11 +31,7 @@ public class MemberServiceController {
 	@Autowired
 	RegistrationServices registrationService;
 	
-	@GetMapping("/hi")
-	public String greet()
-	{
-		return "abhilash here";
-	}
+	
 	@PostMapping("/register")
 	public UserInfo register(@RequestBody UserInfo userInfo)
 	{
@@ -64,7 +60,6 @@ public class MemberServiceController {
 	
 	@GetMapping("/memeberDetails/{userId}")	
 	public Optional<UserInfo> findUser(@PathVariable String userId) {
-		System.out.println("==================================== rest "+userId);
 		return memberServices.getUserData(userId);
 	}
 }
